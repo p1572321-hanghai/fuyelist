@@ -1,0 +1,100 @@
+[
+  {
+    "name": "goofish",
+    "origin": "https://www.goofish.com",
+    "file": "logos/goofish.png",
+    "source": "https://img.alicdn.com/tfs/TB19WObTNv1gK0jSZFFXXb0sXXa-144-144.png"
+  },
+  {
+    "name": "douyin",
+    "origin": "https://www.douyin.com",
+    "file": "logos/douyin.ico",
+    "source": "https://www.douyin.com/favicon.ico"
+  },
+  {
+    "name": "weixin-mp",
+    "origin": "https://mp.weixin.qq.com",
+    "file": "logos/weixin-mp.png",
+    "source": "https://res.wx.qq.com/mpres/zh_CN/htmledition/comm_htmledition/images/icon/login/mp_public_account80a20a.png",
+    "sourcePage": "https://mp.weixin.qq.com/"
+  },
+  {
+    "name": "xiaohongshu",
+    "origin": "https://www.xiaohongshu.com",
+    "file": "logos/xiaohongshu.ico",
+    "source": "https://fe-video-qc.xhscdn.com/fe-platform/ed8fe781ce9e16c1bfac2cd962f0721edabe2e49.ico"
+  },
+  {
+    "name": "weixin-channels",
+    "origin": "https://channels.weixin.qq.com",
+    "file": "logos/weixin-channels.png",
+    "source": "https://res.wx.qq.com/t/wx_fed/finder/helper/finder-helper-web/res/favicon-v2.ico"
+  },
+  {
+    "name": "weixin-mini",
+    "origin": "https://developers.weixin.qq.com/miniprogram/dev/framework/",
+    "file": "logos/weixin-mini.png",
+    "source": "https://res.wx.qq.com/mpres/zh_CN/htmledition/comm_htmledition/images/icon/login/mp_app80a20a.png",
+    "sourcePage": "https://mp.weixin.qq.com/"
+  },
+  {
+    "name": "weixin",
+    "origin": "https://weixin.qq.com",
+    "file": "logos/weixin.png",
+    "source": "https://res.wx.qq.com/a/wx_fed/assets/res/NTI4MWU5.ico"
+  },
+  {
+    "name": "wecom",
+    "origin": "https://work.weixin.qq.com",
+    "file": "logos/wecom.png",
+    "source": "https://wwcdn.weixin.qq.com/node/wwnl/wwnl/style/images/independent/favicon/favicon_16h$faede2cd.png"
+  },
+  {
+    "name": "bilibili",
+    "origin": "https://www.bilibili.com",
+    "file": "logos/bilibili.png",
+    "source": "https://i0.hdslb.com/bfs/static/jinkela/long/images/512.png"
+  },
+  {
+    "name": "x",
+    "origin": "https://x.com",
+    "file": "logos/x.png",
+    "source": "https://x.com/favicon.ico"
+  },
+  {
+    "name": "youtube",
+    "origin": "https://www.youtube.com",
+    "file": "logos/youtube.ico",
+    "source": "https://www.youtube.com/s/desktop/e60429bd/img/favicon.ico"
+  },
+  {
+    "name": "tiktok",
+    "origin": "https://www.tiktok.com",
+    "file": "logos/tiktok.png",
+    "source": "https://www.tiktok.com/favicon.ico"
+  },
+  {
+    "name": "taobao",
+    "origin": "https://www.taobao.com",
+    "file": "logos/taobao.png",
+    "source": "https://img.alicdn.com/tps/i3/T1OjaVFl4dXXa.JOZB-114-114.png"
+  },
+  {
+    "name": "feishu",
+    "origin": "https://www.feishu.cn",
+    "file": "logos/feishu.ico",
+    "source": "https://www.feishu.cn/favicon.ico"
+  },
+  {
+    "name": "temu",
+    "origin": "https://www.temu.com",
+    "file": "logos/temu.ico",
+    "source": "https://www.temu.com/favicon.ico"
+  },
+  {
+    "name": "google",
+    "origin": "https://www.google.com",
+    "file": "logos/google.ico",
+    "source": "https://www.google.com/favicon.ico"
+  }
+]
