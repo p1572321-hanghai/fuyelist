@@ -25,7 +25,7 @@ button{cursor:pointer;transition:background-color 200ms ease,border-color 200ms 
 input,select{transition:border-color 200ms ease,box-shadow 200ms ease}
 input:focus,select:focus{box-shadow:0 0 0 3px rgba(249,115,22,.18);outline:none}
 .app-bg{background:radial-gradient(1200px 480px at 85% -80px,rgba(245,158,11,.10),transparent 60%),radial-gradient(900px 420px at -10% 30%,rgba(79,70,229,.05),transparent 55%),linear-gradient(180deg,#fff8ef 0%,#fdf6ec 220px,#f3f5fa 620px,#f6f4ef 100%);min-height:100vh}
-main{margin:0 auto;width:100%;max-width:48rem;padding:1.25rem 1rem 4rem}
+main{margin:0 auto;width:100%;max-width:72rem;padding:1.25rem 1rem 4rem}
 @media(min-width:640px){main{padding-left:1.5rem;padding-right:1.5rem}}
 .grad-accent{background-image:linear-gradient(120deg,#e85c20 0%,#f97316 45%,#f59e0b 100%)}
 .grad-accent-text{background-image:linear-gradient(120deg,#fb923c 0%,#f59e0b 60%,#fbbf24 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -108,6 +108,7 @@ section.card.share{background:linear-gradient(160deg,#fff7ed 0%,#ffedd5 55%,#fff
 .grid-cards{margin-top:1rem;display:grid;grid-template-columns:1fr;gap:.625rem}
 @media(min-width:640px){.grid-cards{grid-template-columns:repeat(2,1fr)}}
 @media(min-width:1024px){.grid-cards{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:1200px){.grid-cards{grid-template-columns:repeat(4,1fr)}}
 .code-card{position:relative;overflow:hidden;border-radius:1rem;border:1px solid var(--border);background:#fff;padding:1rem 1rem .875rem;box-shadow:0 2px 10px rgba(32,43,59,.06)}
 .code-card .accent-bar{position:absolute;left:0;right:0;top:0;height:3px}
 .code-card .top{display:flex;align-items:flex-start;justify-content:space-between;gap:.5rem}
@@ -455,7 +456,7 @@ async function loadShowcase() {
   }
 }
 function cardHtml(item, index) {
-  const meta = formatMonthDay(item.createdAt) + "入池 · " + (item.lastSuccessAt ? "最近成功：" + formatMonthDay(item.lastSuccessAt) + "（" + formatRelative(item.lastSuccessAt) + "）" : "暂无成功回报");
+  const meta = formatMonthDay(item.createdAt) + "入池" + (item.lastSuccessAt ? " · 最近成功：" + formatMonthDay(item.lastSuccessAt) + "（" + formatRelative(item.lastSuccessAt) + "）" : "");
   let claimLine = "";
   if (item.claimCount === 0) {
     if (!item.pendingVerification) {
@@ -585,7 +586,7 @@ function renderClaimed() {
     '<div class="claimed-box' + (c.isDemo ? " demo" : "") + '">' +
       '<div style="display:flex;flex-wrap:wrap;align-items:center;gap:.5rem"><span class="small-label">你的码</span>' + badges + "</div>" +
       '<p class="your-code">' + esc(c.code) + "</p>" +
-      (c.createdAt ? '<p class="meta" style="font-size:12px;color:var(--dim);margin-top:.25rem">' + formatMonthDay(c.createdAt) + "入池 · " + (c.lastSuccessAt ? "最近成功：" + formatMonthDay(c.lastSuccessAt) : "暂无成功回报") + "</p>" : "") +
+      (c.createdAt ? '<p class="meta" style="font-size:12px;color:var(--dim);margin-top:.25rem">' + formatMonthDay(c.createdAt) + "入池" + (c.lastSuccessAt ? " · 最近成功：" + formatMonthDay(c.lastSuccessAt) : "") + "</p>" : "") +
       (c.isDemo ? '<p class="fs13" style="color:#92400e;margin-top:.25rem;line-height:1.65">这是用于演示完整流程的示例码，不能在 Muse 里真实兑换。等社区有人分享真实码后，池子会优先发放被领最少的码。</p>' : "") +
       '<div class="flex-row" style="margin-top:.75rem">' +
         '<button type="button" id="claimed-copy" class="btn-primary" style="flex:1;border-radius:9999px;padding:.625rem 1rem;font-size:14px;font-weight:700;color:#fff">一键复制</button>' +
