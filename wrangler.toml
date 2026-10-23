@@ -1,0 +1,22 @@
+# wrangler.toml — fuyelist 站点配置（Workers 形态，部署时放在仓库根目录）
+# 现状：本站是「只有静态资产的 Worker」，此前仓库里没有本文件，配置在控制台。
+# 本文件在此基础上只新增三样东西：极薄 Worker 入口（只接管 /api/muse/*）、
+# D1 绑定声明、保持不变的静态资产目录与兼容性日期。
+
+name = "fuyelist"
+main = "worker.js"
+# 现状值，不要升级（与当前项目保持一致）
+compatibility_date = "2026-10-19"
+
+# 静态资产目录：与现状一致，仍指向 ./dist，原有页面零影响；
+# 入口脚本通过 env.ASSETS 读取，非 /api/muse/* 路径全部原样返回静态文件。
+[assets]
+directory = "./dist"
+binding = "ASSETS"
+
+# D1 绑定（配置声明路线：跟代码一起版本化，部署即生效）
+# 接口代码统一通过 env.DB 访问。
+[[d1_databases]]
+binding = "DB"
+database_name = "fuyelist-muse"
+database_id = "7940ad1e-cb7a-4200-a6e9-9597af371c4f"

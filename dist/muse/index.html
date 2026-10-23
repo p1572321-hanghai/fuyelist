@@ -1,0 +1,746 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light" />
+<meta name="description" content="Muse 邀请码互助：免费分享与领取 Muse 邀请码，附手机 App 与网页版兑换入口的准确路径、地区与 48 小时兑换说明。领一个试试，用不了就换下一个。" />
+<link rel="icon" href="data:," />
+<title>Muse 邀请码互助 · fuyelist.com 副业风向标</title>
+<style>
+/* ===== 移植自原型 theme.css 的设计变量与动效 ===== */
+:root{
+  color-scheme:light;
+  --bg:#fdf8f1; --surface:#ffffff; --text:#202b3b; --dim:#5b6b82; --border:#e2e8f0;
+  --accent:#e85c20; --accent-deep:#c74713; --accent-soft:#fff1e6;
+  --indigo:#4f46e5; --indigo-deep:#4338ca;
+  --warn-bg:#fff7ed; --warn-border:#fed7aa; --warn-text:#9a3412;
+  --success-bg:#f0fdf4;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;color:var(--text);font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif}
+button,input,select{font:inherit}
+button{cursor:pointer;transition:background-color 200ms ease,border-color 200ms ease,color 200ms ease,box-shadow 200ms ease,transform 200ms ease,opacity 200ms ease}
+input,select{transition:border-color 200ms ease,box-shadow 200ms ease}
+input:focus,select:focus{box-shadow:0 0 0 3px rgba(249,115,22,.18);outline:none}
+.app-bg{background:radial-gradient(1200px 480px at 85% -80px,rgba(245,158,11,.10),transparent 60%),radial-gradient(900px 420px at -10% 30%,rgba(79,70,229,.05),transparent 55%),linear-gradient(180deg,#fff8ef 0%,#fdf6ec 220px,#f3f5fa 620px,#f6f4ef 100%);min-height:100vh}
+main{margin:0 auto;width:100%;max-width:48rem;padding:1.25rem 1rem 4rem}
+@media(min-width:640px){main{padding-left:1.5rem;padding-right:1.5rem}}
+.grad-accent{background-image:linear-gradient(120deg,#e85c20 0%,#f97316 45%,#f59e0b 100%)}
+.grad-accent-text{background-image:linear-gradient(120deg,#fb923c 0%,#f59e0b 60%,#fbbf24 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.grad-accent-text-dark{background-image:linear-gradient(120deg,#e85c20 0%,#f59e0b 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.btn-primary{background-image:linear-gradient(120deg,#e85c20 0%,#f97316 45%,#f59e0b 100%);box-shadow:0 6px 16px -6px rgba(232,92,32,.55);border:none;transition:transform 220ms ease,box-shadow 220ms ease,filter 220ms ease,opacity 220ms ease}
+.btn-primary:hover{filter:brightness(1.04);box-shadow:0 10px 22px -8px rgba(232,92,32,.6)}
+.btn-primary:active{transform:translateY(1px) scale(.99)}
+.btn-primary:disabled{opacity:.55;cursor:default}
+@keyframes fade-up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fade-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes card-flash{0%{box-shadow:0 0 0 0 rgba(21,128,61,0),0 1px 3px rgba(32,43,59,.05)}35%{box-shadow:0 0 0 3px rgba(34,197,94,.35),0 8px 20px -8px rgba(21,128,61,.35)}100%{box-shadow:0 0 0 0 rgba(34,197,94,0),0 1px 3px rgba(32,43,59,.05)}}
+@keyframes pulse-dot{0%,100%{transform:scale(1);opacity:1;box-shadow:0 0 0 0 rgba(22,163,74,.45)}50%{transform:scale(1.15);opacity:.85;box-shadow:0 0 0 5px rgba(22,163,74,0)}}
+.animate-card-in{animation:fade-up 480ms cubic-bezier(.22,.61,.36,1) both}
+.animate-fade-in{animation:fade-in 320ms ease both}
+.card-flash{animation:card-flash 600ms ease}
+.pulse-dot{animation:pulse-dot 2s ease-in-out infinite}
+[data-reveal]{opacity:0;transform:translateY(14px);transition:opacity 500ms ease,transform 500ms cubic-bezier(.22,.61,.36,1)}
+[data-reveal].is-revealed{opacity:1;transform:none}
+.code-card{transition:transform 250ms ease,box-shadow 250ms ease,border-color 250ms ease}
+.code-card:hover{transform:translateY(-3px);box-shadow:0 14px 28px -12px rgba(32,43,59,.22),0 4px 10px -4px rgba(232,92,32,.18);border-color:#fdba74}
+.code-card .accent-bar{transition:opacity 250ms ease,filter 250ms ease;opacity:.75}
+.code-card:hover .accent-bar{opacity:1;filter:saturate(1.3) brightness(1.05)}
+.batch-wrap{transition:opacity 200ms ease,transform 200ms ease}
+.batch-leaving{opacity:0;transform:translateY(6px)}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+  [data-reveal]{opacity:1!important;transform:none!important}
+  .code-card:hover{transform:none!important}
+  .pulse-dot{animation:none!important}
+}
+/* ===== 布局（对应原型 Tailwind 版式的手写等价样式） ===== */
+.header{position:relative;overflow:hidden;border-radius:1rem;padding:.75rem 1rem;color:#fff;box-shadow:0 10px 28px -12px rgba(22,32,46,.55);background:linear-gradient(135deg,#16202e 0%,#1e2d42 55%,#24344d 100%)}
+.header .top-bar{position:absolute;left:0;right:0;top:0;height:3px}
+.header .glow{pointer-events:none;position:absolute;right:-2.5rem;top:-4rem;height:10rem;width:10rem;border-radius:9999px;background:rgba(249,115,22,.15);filter:blur(24px)}
+.header .row{position:relative;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;column-gap:.75rem;row-gap:2px}
+.header h1{margin:0;font-size:22px;font-weight:800;line-height:1.25;letter-spacing:-.01em}
+.header .site-line{margin:0;font-size:12px;color:#cbd5e1}
+.header .site-line .brand{font-weight:600;color:#fdba74}
+.header .site-line .notofficial{font-weight:500;color:#fcd34d}
+.header .intro{position:relative;margin:.25rem 0 0;font-size:13px;line-height:1.65;color:#cbd5e1}
+.stats{position:relative;margin-top:.625rem;display:flex;gap:.5rem;border-top:1px solid rgba(255,255,255,.1);padding-top:.625rem}
+.stat{min-width:64px;flex:1;text-align:center}
+.stat .num{font-size:20px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.stat .num .unit{margin-left:2px;font-size:11px;font-weight:500;color:#cbd5e1;-webkit-text-fill-color:currentColor}
+.stat .lab{margin-top:.25rem;font-size:11px;font-weight:500;color:#94a3b8}
+.pill-row{position:relative;margin-top:.625rem}
+.pill{display:inline-flex;align-items:center;gap:.375rem;border-radius:9999px;padding:.25rem .625rem;font-size:12px}
+.pill-today{background:rgba(249,115,22,.15);color:#fed7aa;box-shadow:inset 0 0 0 1px rgba(251,146,60,.3);font-weight:600}
+.pill-today .dot{height:6px;width:6px;border-radius:9999px;background:#fb923c}
+.pill-latest{background:rgba(255,255,255,.05);color:#cbd5e1;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1);font-weight:500}
+section.card{margin-top:1.25rem;border-radius:20px;padding:1.25rem;background:#fff;border:1px solid var(--border);box-shadow:0 8px 24px -14px rgba(32,43,59,.18)}
+section.card.showcase{margin-top:1rem;border-color:#ffedd5;box-shadow:0 8px 28px -12px rgba(32,43,59,.14);padding:1rem}
+@media(min-width:640px){section.card.showcase{padding:1.25rem}}
+section.card.wizard{border-color:#e0e7ff;background:linear-gradient(160deg,#eef2ff 0%,#f5f3ff 55%,#ffffff 130%);box-shadow:0 8px 24px -14px rgba(79,70,229,.25)}
+section.card.share{background:linear-gradient(160deg,#fff7ed 0%,#ffedd5 55%,#ffffff 135%);border-color:#ffedd5;box-shadow:0 8px 24px -14px rgba(232,92,32,.30)}
+.sec-head{display:flex;align-items:center;gap:.5rem}
+.sec-head h2{margin:0;font-size:19px;font-weight:700}
+.sec-badge{display:flex;height:1.75rem;width:1.75rem;align-items:center;justify-content:center;border-radius:9999px;font-size:13px;font-weight:700;color:#fff;flex-shrink:0}
+.sec-badge.orange{box-shadow:0 4px 10px -2px rgba(232,92,32,.5)}
+.sec-badge.indigo{background:var(--indigo);box-shadow:0 4px 10px -2px rgba(79,70,229,.55)}
+.sec-badge.dark{background:#16202e}
+.dim{color:var(--dim)}
+.fs13{font-size:13px;line-height:1.65}
+.fs14{font-size:14px;line-height:1.65}
+.mt1{margin-top:.25rem}.mt15{margin-top:.375rem}.mt2{margin-top:.5rem}.mt3{margin-top:.75rem}.mt4{margin-top:1rem}.mt5{margin-top:1.25rem}
+.legend{display:flex;flex-wrap:wrap;gap:.375rem;align-items:center;margin-top:.5rem}
+.legend span.note{font-size:11px;color:var(--dim)}
+.badge{display:inline-flex;flex-shrink:0;align-items:center;gap:.375rem;border-radius:9999px;padding:.125rem .5rem;font-size:11px;font-weight:700}
+.badge .dot{height:6px;width:6px;border-radius:9999px;flex-shrink:0}
+.badge-fresh{background:#ecfdf5;color:#047857;box-shadow:inset 0 0 0 1px rgba(167,243,208,.8),0 1px 4px rgba(22,163,74,.12)}
+.badge-fresh .dot{background:#10b981}
+.badge-pending{background:#fffbeb;color:#b45309;box-shadow:inset 0 0 0 1px rgba(252,211,77,.8),0 1px 4px rgba(217,119,6,.10)}
+.badge-pending .dot{background:#f59e0b}
+.badge-stale{background:#fff1f2;color:#be123c;box-shadow:inset 0 0 0 1px rgba(253,164,175,.8),0 1px 4px rgba(225,29,72,.10)}
+.badge-stale .dot{background:#f43f5e}
+.badge-public{background:#f1f5f9;color:#334155;box-shadow:inset 0 0 0 1px rgba(203,213,225,.8)}
+.badge-public .dot{background:#64748b}
+.badge-new{color:#fff;padding:.125rem .625rem;box-shadow:0 2px 8px rgba(232,92,32,.35)}
+.badge-new .dot{background:#fff}
+.grid-cards{margin-top:1rem;display:grid;grid-template-columns:1fr;gap:.625rem}
+@media(min-width:640px){.grid-cards{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1024px){.grid-cards{grid-template-columns:repeat(3,1fr)}}
+.code-card{position:relative;overflow:hidden;border-radius:1rem;border:1px solid var(--border);background:#fff;padding:1rem 1rem .875rem;box-shadow:0 2px 10px rgba(32,43,59,.06)}
+.code-card .accent-bar{position:absolute;left:0;right:0;top:0;height:3px}
+.code-card .top{display:flex;align-items:flex-start;justify-content:space-between;gap:.5rem}
+.code-card .code{margin:0;word-break:break-all;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:22px;font-weight:700;letter-spacing:.14em}
+.code-card .meta{margin-top:.25rem;font-size:12px;color:var(--dim)}
+.code-card .note{margin-top:.375rem;font-size:12px;line-height:1.65;color:var(--dim)}
+.copy-btn{margin-top:.625rem;width:100%;border-radius:9999px;padding:.5rem 1rem;font-size:13px;font-weight:700;color:#fff}
+.btn-success{flex:1;border-radius:9999px;border:1px solid #6ee7b7;background:#fff;padding:.375rem .5rem;font-size:12px;font-weight:700;color:#047857}
+.btn-fail{flex:1;border-radius:9999px;border:1px solid #fecdd3;background:#fff;padding:.375rem .5rem;font-size:12px;font-weight:700;color:#be123c}
+.btn-dark{border-radius:9999px;background:#202b3b;color:#fff;border:none;font-weight:700}
+.btn-dark:disabled{opacity:.4;cursor:default}
+.msg-ok{margin-top:.5rem;font-size:12px;line-height:1.65;color:#047857}
+.msg-err{margin-top:.5rem;font-size:12px;color:#b91c1c}
+select.reason{margin-top:.25rem;width:100%;border-radius:.5rem;border:1px solid var(--border);background:#fff;padding:.5rem .625rem;font-size:13px}
+.batch-foot{margin-top:.75rem;display:flex;align-items:center;justify-content:space-between;gap:.75rem}
+.batch-foot p{margin:0;font-size:12px;color:var(--dim)}
+.btn-batch{flex-shrink:0;border-radius:9999px;border:1px solid #fed7aa;background:#fff7ed;padding:.5rem 1rem;font-size:13px;font-weight:700;color:var(--accent-deep)}
+.btn-batch:hover{background:#ffedd5}
+.step-box{margin-top:1rem;border-radius:.75rem;border:1px solid #c7d2fe;background:#fff;padding:.75rem 1rem;box-shadow:0 6px 16px -10px rgba(79,70,229,.35)}
+.step-flex{display:flex;align-items:flex-start;gap:.75rem}
+.step-num{display:flex;height:2rem;width:2rem;flex-shrink:0;align-items:center;justify-content:center;border-radius:9999px;background:var(--indigo);color:#fff;font-size:12px;font-weight:800}
+.step-title{margin:0;font-size:15px;font-weight:700;line-height:1.4}
+.tabs{margin-top:1rem;display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
+.tab{border-radius:.75rem;border:1px solid var(--border);background:rgba(255,255,255,.7);padding:.75rem 1rem;text-align:left}
+.tab.active{border-color:var(--indigo);background:#fff;box-shadow:0 6px 16px -8px rgba(79,70,229,.45)}
+.tab .t{display:block;font-size:15px;font-weight:700}
+.tab .s{margin-top:2px;display:block;font-size:12px;color:var(--dim)}
+.path-box{border-radius:.75rem;background:rgba(255,255,255,.8);border:1px solid #e0e7ff;padding:.75rem 1rem}
+.path-label{margin:0;font-size:13px;font-weight:600;letter-spacing:.02em;color:var(--indigo)}
+.path-main{margin:.25rem 0 0;font-size:17px;font-weight:700;line-height:1.4}
+ol.steps{margin:.75rem 0 0;padding-left:1.25rem;font-size:14px;line-height:1.65}
+ol.steps li{margin-top:.5rem}
+ol.steps li:first-child{margin-top:0}
+.warn-box{margin-top:.75rem;border-radius:.75rem;border:1px solid var(--warn-border);background:var(--warn-bg);padding:.75rem 1rem;color:var(--warn-text)}
+.info-box{margin-top:.75rem;border-radius:.75rem;border:1px solid var(--border);background:#fff;padding:.75rem 1rem;font-size:13px;line-height:1.65}
+.vm-box{margin-top:.75rem;border-radius:.75rem;border:1px dashed var(--border);padding:.75rem 1rem;font-size:13px;line-height:1.65;color:var(--dim)}
+.claim-big{width:100%;border-radius:9999px;padding:.875rem 1.5rem;font-size:16px;font-weight:700;color:#fff}
+.claimed-box{border-radius:.75rem;border:1px solid var(--border);background:#f8fafc;padding:1rem}
+.claimed-box.demo{border-color:#fcd34d;background:#fffbeb}
+.your-code{margin-top:.5rem;word-break:break-all;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:20px;font-weight:700;letter-spacing:.02em}
+.chip{display:inline-flex;border-radius:9999px;padding:.125rem .5rem;font-size:11px;font-weight:700}
+.chip-demo{background:#f59e0b;color:#fff}
+.chip-ok{background:#d1fae5;color:#065f46}
+.radio-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
+.radio-opt{border-radius:.75rem;border:1px solid var(--border);background:#fff;padding:.75rem;font-size:14px;font-weight:700;text-align:center;width:100%}
+.radio-opt.sel-ok{border-color:#10b981;background:#ecfdf5;color:#065f46}
+.radio-opt.sel-fail{border-color:#fb7185;background:#fff1f2;color:#9f1239}
+fieldset{border:none;margin:.75rem 0 0;padding:0}
+legend{font-size:13px;font-weight:600;padding:0}
+.fail-opt{display:flex;cursor:pointer;align-items:flex-start;gap:.625rem;border-radius:.5rem;border:1px solid var(--border);background:#fff;padding:.625rem .75rem;margin-top:.375rem}
+.fail-opt.sel{border-color:var(--accent);background:var(--accent-soft)}
+.fail-opt input{margin-top:2px;accent-color:#e85c20}
+.fail-opt .l{display:block;font-size:13px;font-weight:600}
+.fail-opt .h{display:block;font-size:12px;color:var(--dim)}
+input.text-input{margin-top:.375rem;width:100%;border-radius:.75rem;border:1px solid var(--border);background:#fff;padding:.75rem 1rem;font-size:15px}
+.report-ok-box{margin-top:.75rem;border-radius:.75rem;background:var(--success-bg);border:1px solid #a7f3d0;padding:.75rem 1rem;font-size:13px;color:#064e3b}
+.faq-item{border-bottom:1px solid var(--border)}
+.faq-item:last-child{border-bottom:none}
+.faq-q{display:flex;width:100%;align-items:center;justify-content:space-between;gap:.75rem;padding:.875rem 0;text-align:left;background:none;border:none}
+.faq-q span:first-child{font-size:14px;font-weight:600}
+.faq-q .sign{color:var(--dim)}
+.faq-a{margin:0;padding-bottom:1rem;font-size:13px;line-height:1.7;color:var(--dim)}
+.related{margin-top:1.25rem;border-radius:20px;border:1px solid var(--border);background:#fff;padding:1rem 1.25rem;box-shadow:0 8px 24px -16px rgba(32,43,59,.16)}
+.related h2{margin:0;font-size:14px;font-weight:700;color:var(--dim);letter-spacing:.02em}
+.related ul{margin:.5rem 0 0;padding:0;list-style:none}
+.related li{margin-top:.375rem;font-size:13px;line-height:1.65}
+.related a{color:var(--accent-deep);text-decoration:none;border-bottom:1px solid #fed7aa}
+.related a:hover{border-bottom-color:var(--accent-deep)}
+footer{margin-top:2rem;text-align:center;font-size:12px;line-height:1.65;color:var(--dim)}
+footer p{margin:0}
+footer p+p{margin-top:.25rem}
+.toast{position:fixed;left:0;right:0;bottom:1.5rem;z-index:50;margin:0 auto;width:fit-content;max-width:90vw;border-radius:9999px;background:#16202e;padding:.625rem 1rem;font-size:13px;font-weight:600;color:#fff;box-shadow:0 12px 28px -8px rgba(22,32,46,.55)}
+.toast .check{margin-right:.375rem;color:#4ade80}
+.flex-row{display:flex;gap:.5rem}
+.flex-row.mt2{gap:.375rem}
+.hidden{display:none!important}
+.small-label{font-size:12px;font-weight:600;letter-spacing:.02em;color:var(--dim)}
+</style>
+</head>
+<body>
+<div class="app-bg">
+<main>
+  <!-- 页头 -->
+  <div class="header">
+    <span aria-hidden="true" class="top-bar grad-accent"></span>
+    <span aria-hidden="true" class="glow"></span>
+    <div class="row">
+      <h1>Muse <span class="grad-accent-text">邀请码互助</span></h1>
+      <p class="site-line"><span class="brand">fuyelist.com · 副业风向标</span> 工具页 · 独立社区互助 · <span class="notofficial">非 Meta / Muse 官方</span></p>
+    </div>
+    <p class="intro">下面直接展示可领的邀请码，复制后按兑换向导去兑换；兑完回来回报一次，失效码会自动下架补位。</p>
+    <div id="stats-area"><p class="intro" style="font-size:12px;color:#94a3b8">正在加载码池…</p></div>
+  </div>
+
+  <!-- 展示区 -->
+  <section data-reveal class="card showcase" aria-labelledby="showcase-h">
+    <div class="sec-head">
+      <span class="sec-badge orange grad-accent">码</span>
+      <h2 id="showcase-h">邀请码 · 打开就能领</h2>
+    </div>
+    <p class="fs13 dim mt15">池中可领的真实邀请码，被领次数少的排在前面。点卡片「一键复制」就能用；用完请在卡片上回报成功或失败——确认失效的码会被下架并自动补位。所有码不保证可用，复制后请立刻按下面的兑换向导去兑换，别囤。</p>
+    <p class="fs13 dim mt15">排序会参考入池时间和最近成功回报，太久没人成功过的码会自动靠后。卡片上的新鲜度是按入池时间和用户回报估算的，不是 Muse 官方实时有效性。</p>
+    <div class="legend" aria-label="新鲜度图例">
+      <span class="badge badge-fresh"><span class="dot pulse-dot"></span>新鲜</span><span class="note">入池≤3天或近7天有成功</span>
+      <span class="badge badge-pending"><span class="dot"></span>待验证</span><span class="note">超过7天未验证</span>
+      <span class="badge badge-stale"><span class="dot"></span>较久未验证</span><span class="note">超过14天且无成功回报</span>
+    </div>
+    <div id="showcase-area"><p class="fs14 dim mt4">正在加载邀请码…</p></div>
+  </section>
+
+  <!-- 兑换向导 -->
+  <section data-reveal class="card wizard" aria-labelledby="wizard-h">
+    <div class="sec-head">
+      <span class="sec-badge indigo">1</span>
+      <h2 id="wizard-h">找到兑换入口（最关键）</h2>
+    </div>
+    <p class="fs14 dim mt2">很多人不是码有问题，是根本没找对地方。先确认地区这关过了，再选你用的平台，下面会直接给出准确路径。</p>
+
+    <div class="step-box">
+      <div class="step-flex">
+        <span class="step-num">01</span>
+        <div>
+          <p class="step-title">第一步 · 先确认地区</p>
+          <p class="fs13 dim mt1">Muse 目前仅在<strong style="color:var(--text)">美国（2026 年 9 月 8 日起）</strong>和<strong style="color:var(--text)">加拿大（2026 年 9 月 18 日起）</strong>上线。没过地区这关，后面的注册和兑换都无从谈起。</p>
+          <p class="fs13 dim mt15">其他地区的用户，<strong style="color:var(--text)">注册前需要先挂美国 VPN</strong> 再去注册；<strong style="color:var(--text)">注册成功后可以关掉 VPN</strong>，正常使用即可。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="tabs" role="tablist" aria-label="选择平台">
+      <button type="button" role="tab" id="tab-app" aria-selected="true" class="tab active"><span class="t">📱 手机 App</span><span class="s">iPhone / Android</span></button>
+      <button type="button" role="tab" id="tab-web" aria-selected="false" class="tab"><span class="t">💻 网页版</span><span class="s">muse.ai</span></button>
+    </div>
+
+    <div id="panel-app" class="animate-fade-in mt4">
+      <div class="path-box">
+        <p class="path-label">准确路径</p>
+        <p class="path-main">Muse App 内 → Settings → Redeem token</p>
+        <ol class="steps">
+          <li>打开 <strong>Muse App</strong>（不是手机系统设置）</li>
+          <li>进入 App 内的 <strong>Settings</strong> —— 这里的 Settings 指 Muse 应用里的设置，不是 iPhone / 安卓的系统「设置」</li>
+          <li>找到 <strong>Redeem token</strong>，把领到的码粘贴进去并确认</li>
+        </ol>
+      </div>
+      <div class="warn-box">
+        <p style="margin:0;font-size:14px;font-weight:700">⏰ 只有前 48 小时能兑</p>
+        <p class="fs13" style="margin:.25rem 0 0">App 内的 Redeem token 只在你<strong>加入 Muse 后的前 48 小时内</strong>可用。超过这个时间，入口可能消失或提示已过兑换期——这不是码坏了。领到码请立刻兑换，不要囤。</p>
+      </div>
+    </div>
+
+    <div id="panel-web" class="animate-fade-in mt4 hidden">
+      <div class="path-box">
+        <p class="path-label" style="color:var(--dim)">准确路径</p>
+        <p class="path-main">muse.ai → Settings → General → Usage → Redeem invite code</p>
+        <ol class="steps">
+          <li>在浏览器打开 <strong>muse.ai</strong> 并登录</li>
+          <li>进入 <strong>Settings → General → Usage</strong></li>
+          <li>找到 <strong>Redeem invite code</strong>，粘贴邀请码并确认</li>
+        </ol>
+      </div>
+      <div class="info-box">
+        <p style="margin:0"><strong>兑换成功后入口消失是正常的：</strong>网页版在你确认兑换成功后，Redeem invite code 入口就会不见。下次找不到，先想想是不是已经兑过了。</p>
+      </div>
+    </div>
+
+    <div class="vm-box">
+      <p style="margin:0"><strong style="color:var(--text)">特殊情况 · Confidential VM：</strong>如果你用的是 confidential VM 环境，任何平台都不会出现兑换入口，这是产品设计如此，不是账号坏了，也不是没推送到你。换到普通 App / 网页环境再试。</p>
+    </div>
+  </section>
+
+  <!-- 一次领一个 -->
+  <section data-reveal class="card" aria-labelledby="claim-h">
+    <div class="sec-head">
+      <span class="sec-badge orange grad-accent">2</span>
+      <h2 id="claim-h">一次领一个</h2>
+    </div>
+    <p class="fs14 dim mt2">不想自己挑？点按钮，系统按同一套排序（被领少、最近有成功回报优先，太久没人成功过的自动靠后）把最靠前的一个码单独发给你。</p>
+    <div id="claim-area" class="mt4">
+      <button type="button" id="claim-btn" class="btn-primary claim-big">领一个邀请码</button>
+      <p id="claim-msg" class="fs13 dim mt3" role="status"></p>
+    </div>
+  </section>
+
+  <!-- 分享码 -->
+  <section data-reveal class="card share" aria-labelledby="share-h">
+    <div class="sec-head">
+      <span class="sec-badge orange grad-accent">3</span>
+      <h2 id="share-h">我有多余的码，分享出来</h2>
+    </div>
+    <p class="fs14 dim mt2">把你用不完的邀请码贴进来，它会进入码池分给其他人。请只分享你自己的码，不要买卖。</p>
+    <form id="share-form" class="mt4">
+      <label for="share-input" style="font-size:13px;font-weight:600">粘贴邀请码</label>
+      <input id="share-input" class="text-input" placeholder="例如：从 Muse 里复制的完整邀请码" autocomplete="off" />
+      <button type="submit" id="share-btn" class="btn-primary claim-big mt3" style="font-size:15px">提交到码池</button>
+      <p id="share-msg" class="fs13 mt2" role="status"></p>
+    </form>
+  </section>
+
+  <!-- FAQ -->
+  <section data-reveal class="card" aria-labelledby="faq-h">
+    <div class="sec-head">
+      <span class="sec-badge dark">?</span>
+      <h2 id="faq-h">常见问题</h2>
+    </div>
+    <div id="faq-list" class="mt3"></div>
+  </section>
+
+  <!-- 相关工具（fuyelist.com/muse 正式版新增模块，克制的编辑性文字链） -->
+  <aside data-reveal class="related" aria-labelledby="related-h">
+    <h2 id="related-h">相关工具</h2>
+    <ul>
+      <li><a href="https://www.hubapi.store/gmail-accounts/google-ai-pro-vs-google-ai-ultra" target="_blank" rel="noopener">AI 工具账号选购参考：Google AI Pro 与 Ultra 有什么区别、怎么选</a></li>
+      <li><a href="https://www.hubapi.store/gmail-accounts/gemini-4-argon-vs-chatgpt" target="_blank" rel="noopener">AI 工具对比参考：Gemini 与 ChatGPT，日常使用与长文处理哪家更顺手</a></li>
+    </ul>
+  </aside>
+
+  <footer>
+    <p>fuyelist.com · 副业风向标 — AI 副业机会与实战案例</p>
+    <p>本页为独立社区互助工具，非 Meta / Muse 官方页面。邀请码规则与奖励以 Muse 应用内说明为准。</p>
+  </footer>
+</main>
+</div>
+<div id="toast" class="toast hidden" role="status"><span class="check">✓</span><span id="toast-text"></span></div>
+<script>
+"use strict";
+/* ===== 数据层：同源 POST JSON 到 /api/muse/<action>，数字全部来自接口 ===== */
+const API_BASE = "/api/muse/";
+async function api(action, body) {
+  const res = await fetch(API_BASE + action, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify(body || {}),
+  });
+  if (!res.ok) throw new Error("HTTP " + res.status);
+  return res.json();
+}
+const reducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const $ = (sel, el) => (el || document).querySelector(sel);
+
+const FAIL_OPTIONS = [
+  { value: "used_up", label: "已用完 / 名额已满", hint: "提示次数或名额已用完" },
+  { value: "invalid", label: "无效码", hint: "提示 invalid / 不存在" },
+  { value: "revoked", label: "已被撤销", hint: "分享者取消或系统撤销" },
+  { value: "already_redeemed", label: "我已经兑换过了", hint: "账号已用过邀请码" },
+  { value: "expired_48h", label: "已过 48 小时兑换期", hint: "加入 Muse 超过 48 小时（App）" },
+  { value: "too_many_attempts", label: "尝试次数过多", hint: "被暂时限制，请稍后再试" },
+  { value: "other", label: "其他原因", hint: "以上都不符合" },
+];
+const FRESHNESS_META = {
+  fresh: { label: "新鲜", cls: "badge-fresh", dot: "background:#10b981" },
+  pending: { label: "待验证", cls: "badge-pending", dot: "background:#f59e0b" },
+  stale: { label: "较久未验证", cls: "badge-stale", dot: "background:#f43f5e" },
+};
+function esc(s) { return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
+function formatMonthDay(iso) {
+  const d = new Date(iso); if (Number.isNaN(d.getTime())) return "";
+  return (d.getMonth() + 1) + "月" + d.getDate() + "日";
+}
+function formatRelative(iso) {
+  const d = new Date(iso); const days = Math.floor((Date.now() - d.getTime()) / 86400000);
+  if (days <= 0) return "今天"; if (days === 1) return "昨天";
+  if (days < 7) return days + "天前"; return formatMonthDay(iso);
+}
+function freshnessBadge(f) {
+  const m = FRESHNESS_META[f] || FRESHNESS_META.pending;
+  return '<span class="badge ' + m.cls + '"><span class="dot' + (f === "fresh" ? " pulse-dot" : "") + '" style="' + m.dot + '"></span>' + m.label + "</span>";
+}
+function publicBadge() {
+  return '<span class="badge badge-public"><span class="dot"></span>公开分享 · 待验证</span>';
+}
+function brandNewBadge() {
+  return '<span class="badge badge-new grad-accent"><span class="dot pulse-dot"></span>全新 · 未被领取</span>';
+}
+
+/* ===== 数字滚动计数（尊重减少动效） ===== */
+function countUp(el, target, duration) {
+  duration = duration || 500;
+  if (reducedMotion()) { el.firstChild.nodeValue = String(target); return; }
+  const start = performance.now();
+  function tick(now) {
+    const p = Math.min(1, (now - start) / duration);
+    const eased = 1 - Math.pow(1 - p, 3);
+    el.firstChild.nodeValue = String(Math.round(target * eased));
+    if (p < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+/* ===== 页头统计 ===== */
+async function loadPool() {
+  const area = $("#stats-area");
+  try {
+    const s = await api("pool-state", {});
+    let pill = "";
+    if (s.todayNewCount > 0) {
+      pill = '<div class="pill-row"><span class="pill pill-today"><span class="dot pulse-dot"></span>今日新入池 ' + s.todayNewCount + " 个</span></div>";
+    } else if (s.latestCreatedAt) {
+      pill = '<div class="pill-row"><span class="pill pill-latest">最近一次入池：' + formatMonthDay(s.latestCreatedAt) + "</span></div>";
+    }
+    area.innerHTML =
+      '<div class="stats">' +
+      statHtml("当前可领", s.availableCount) + statHtml("累计被领", s.totalClaimed) +
+      statHtml("兑换成功", s.totalSuccess) + statHtml("真实码入池", s.totalShared) +
+      "</div>" + pill;
+    area.querySelectorAll(".stat .num").forEach((el) => countUp(el, Number(el.dataset.value)));
+  } catch (e) {
+    area.innerHTML = '<p class="intro" style="font-size:12px;color:#cbd5e1">码池加载失败。<button type="button" id="pool-retry" class="btn-primary" style="margin-left:.5rem;border-radius:9999px;padding:.25rem .75rem;font-size:12px;font-weight:600;color:#fff">重试</button></p>';
+    $("#pool-retry").addEventListener("click", loadPool);
+  }
+}
+function statHtml(label, value) {
+  return '<div class="stat"><div class="num grad-accent-text" data-value="' + value + '">0<span class="unit">个</span></div><div class="lab">' + label + "</div></div>";
+}
+
+/* ===== 展示区 ===== */
+let batchOffset = 0, batchLeaving = false;
+async function loadShowcase() {
+  const area = $("#showcase-area");
+  try {
+    const data = await api("showcase", { offset: batchOffset });
+    if (!data.codes || data.codes.length === 0) {
+      area.innerHTML = '<p class="fs14 dim mt4">池里的码暂时都领完了，等有人分享新码后再来。</p>';
+      return;
+    }
+    area.innerHTML =
+      '<div class="batch-wrap" id="batch-wrap"><div class="grid-cards">' +
+      data.codes.map((item, i) => cardHtml(item, i)).join("") +
+      '</div></div>' +
+      '<div class="batch-foot"><p>本批展示 ' + data.codes.length + " 个 · 精选可领 " + data.curatedCount + " 个</p>" +
+      (data.totalAvailable > data.codes.length ? '<button type="button" id="next-batch" class="btn-batch">换一批 ↻</button>' : "") +
+      "</div>";
+    area.querySelectorAll("[data-copy]").forEach((btn) => btn.addEventListener("click", () => doCopy(btn)));
+    area.querySelectorAll("[data-ok]").forEach((btn) => btn.addEventListener("click", () => doCardReport(btn, "success")));
+    area.querySelectorAll("[data-fail-toggle]").forEach((btn) => btn.addEventListener("click", () => {
+      const box = document.getElementById("fail-box-" + btn.dataset.failToggle);
+      box.classList.toggle("hidden");
+      btn.setAttribute("aria-expanded", String(!box.classList.contains("hidden")));
+    }));
+    area.querySelectorAll("[data-submit-fail]").forEach((btn) => btn.addEventListener("click", () => doCardReport(btn, "failure")));
+    const nb = $("#next-batch");
+    if (nb) nb.addEventListener("click", handleNextBatch);
+  } catch (e) {
+    area.innerHTML = '<div class="mt4"><p class="fs14 dim">邀请码加载失败。</p><button type="button" id="showcase-retry" class="btn-primary" style="margin-top:.5rem;border-radius:9999px;padding:.5rem 1rem;font-size:14px;font-weight:600;color:#fff">重试</button></div>';
+    $("#showcase-retry").addEventListener("click", loadShowcase);
+  }
+}
+function cardHtml(item, index) {
+  const meta = formatMonthDay(item.createdAt) + "入池 · " + (item.lastSuccessAt ? "最近成功：" + formatMonthDay(item.lastSuccessAt) + "（" + formatRelative(item.lastSuccessAt) + "）" : "暂无成功回报");
+  let claimLine = "";
+  if (item.claimCount === 0) {
+    if (!item.pendingVerification) {
+      claimLine = '<p class="note" style="display:flex;flex-wrap:wrap;align-items:center;gap:.375rem">' + brandNewBadge() +
+        (item.successCount > 0 ? '<span>' + item.successCount + " 次回报成功</span>" : "") + "</p>";
+    }
+  } else {
+    claimLine = '<p class="meta" style="margin-top:.125rem">已被领 ' + item.claimCount + " 次" + (item.successCount > 0 ? " · " + item.successCount + " 次回报成功" : "") + "</p>";
+  }
+  return '<div class="code-card animate-card-in" style="animation-delay:' + Math.min(index, 11) * 60 + 'ms" data-card="' + item.id + '">' +
+    '<span aria-hidden="true" class="accent-bar grad-accent"></span>' +
+    '<div class="top"><p class="code">' + esc(item.code) + "</p>" + (item.pendingVerification ? publicBadge() : freshnessBadge(item.freshness)) + "</div>" +
+    '<p class="meta">' + meta + "</p>" +
+    (item.pendingVerification ? '<p class="note">来自公开分享、还没人回报成功过，排在已验证的码后面。可以试，兑完请回报帮它验证。</p>' : "") +
+    claimLine +
+    '<button type="button" class="btn-primary copy-btn" data-copy="' + item.id + '" data-code="' + esc(item.code) + '" aria-label="复制邀请码 ' + esc(item.code) + '">一键复制</button>' +
+    '<div id="card-msg-' + item.id + '"></div>' +
+    '<div class="flex-row mt2">' +
+      '<button type="button" class="btn-success" data-ok="' + item.id + '" data-code="' + esc(item.code) + '">✓ 兑换成功</button>' +
+      '<button type="button" class="btn-fail" data-fail-toggle="' + item.id + '" aria-expanded="false">✕ 没兑上</button>' +
+    "</div>" +
+    '<div id="fail-box-' + item.id + '" class="hidden mt2">' +
+      '<label class="small-label" for="reason-' + item.id + '">失败原因（按 Muse 的提示选）</label>' +
+      '<select id="reason-' + item.id + '" class="reason">' +
+        FAIL_OPTIONS.map((o) => '<option value="' + o.value + '">' + o.label + "</option>").join("") +
+      "</select>" +
+      '<button type="button" class="btn-dark" style="margin-top:.5rem;width:100%;border-radius:9999px;padding:.5rem .75rem;font-size:12px" data-submit-fail="' + item.id + '" data-code="' + esc(item.code) + '">提交回报</button>' +
+    "</div></div>";
+}
+async function doCopy(btn) {
+  const code = btn.dataset.code, id = btn.dataset.copy;
+  const card = btn.closest(".code-card");
+  try {
+    await navigator.clipboard.writeText(code);
+    btn.textContent = "✓ 已复制";
+    card.classList.remove("card-flash"); void card.offsetWidth; card.classList.add("card-flash");
+    setTimeout(() => { btn.textContent = "一键复制"; }, 2000);
+  } catch (e) {
+    cardMsg(id, "复制失败，请长按码手动复制。", false);
+    return;
+  }
+  try { await api("copy", { code }); refreshAll(); } catch (e) { /* 计数尽力而为，码已复制 */ }
+}
+async function doCardReport(btn, result) {
+  const code = btn.dataset.code;
+  const id = result === "success" ? btn.dataset.ok : btn.dataset.submitFail;
+  const reason = result === "failure" ? (document.getElementById("reason-" + id) || {}).value || "other" : null;
+  document.querySelectorAll('[data-card="' + id + '"] button').forEach((b) => { b.disabled = true; });
+  try {
+    const res = await api("report", { claimId: null, code, result, reason });
+    if (res.ok) { cardMsg(id, res.message, true); refreshAll(); }
+    else { cardMsg(id, res.message, false); document.querySelectorAll('[data-card="' + id + '"] button').forEach((b) => { b.disabled = false; }); }
+  } catch (e) {
+    cardMsg(id, "回报失败，请再试一次。", false);
+    document.querySelectorAll('[data-card="' + id + '"] button').forEach((b) => { b.disabled = false; });
+  }
+}
+function cardMsg(id, text, ok) {
+  const box = document.getElementById("card-msg-" + id);
+  if (box) box.innerHTML = '<p class="' + (ok ? "msg-ok" : "msg-err") + '" role="status">' + esc(text) + "</p>";
+}
+function handleNextBatch() {
+  if (batchLeaving) return;
+  if (reducedMotion()) { batchOffset += 12; loadShowcase(); return; }
+  batchLeaving = true;
+  const wrap = $("#batch-wrap");
+  if (wrap) wrap.classList.add("batch-leaving");
+  setTimeout(() => { batchOffset += 12; batchLeaving = false; loadShowcase(); }, 200);
+}
+function refreshAll() { loadPool(); loadShowcase(); }
+
+/* ===== 向导选项卡 ===== */
+let platform = "app";
+function setPlatform(p) {
+  platform = p;
+  $("#tab-app").classList.toggle("active", p === "app");
+  $("#tab-web").classList.toggle("active", p === "web");
+  $("#tab-app").setAttribute("aria-selected", String(p === "app"));
+  $("#tab-web").setAttribute("aria-selected", String(p === "web"));
+  $("#panel-app").classList.toggle("hidden", p !== "app");
+  $("#panel-web").classList.toggle("hidden", p !== "web");
+}
+$("#tab-app").addEventListener("click", () => setPlatform("app"));
+$("#tab-web").addEventListener("click", () => setPlatform("web"));
+
+/* ===== 一次领一个 ===== */
+let claimed = null, reportChoice = null, claimedCopied = false;
+$("#claim-btn").addEventListener("click", async () => {
+  const btn = $("#claim-btn"), msg = $("#claim-msg");
+  btn.disabled = true; btn.textContent = "正在为你分配…";
+  try {
+    const data = await api("claim", {});
+    msg.textContent = data.message || "";
+    if (data.ok && data.code) {
+      claimed = data; claimedCopied = false; reportChoice = null;
+      renderClaimed();
+    }
+    loadPool(); loadShowcase();
+  } catch (e) {
+    msg.textContent = "";
+    $("#claim-area").insertAdjacentHTML("beforeend", '<p class="fs13" style="color:#b91c1c;margin-top:.5rem">领取失败，请再试一次。</p>');
+  } finally {
+    if (!claimed) { btn.disabled = false; btn.textContent = "领一个邀请码"; }
+  }
+});
+function resetClaim() {
+  claimed = null; reportChoice = null;
+  $("#claim-area").innerHTML = '<button type="button" id="claim-btn" class="btn-primary claim-big">领一个邀请码</button><p id="claim-msg" class="fs13 dim mt3" role="status"></p>';
+  $("#claim-btn").addEventListener("click", async () => {
+    const b = $("#claim-btn"); b.disabled = true; b.textContent = "正在为你分配…";
+    try {
+      const data = await api("claim", {});
+      $("#claim-msg").textContent = data.message || "";
+      if (data.ok && data.code) { claimed = data; reportChoice = null; renderClaimed(); }
+      loadPool(); loadShowcase();
+    } catch (e) { $("#claim-msg").textContent = "领取失败，请再试一次。"; }
+    if (!claimed) { b.disabled = false; b.textContent = "领一个邀请码"; }
+  });
+}
+function renderClaimed() {
+  const c = claimed;
+  const badges =
+    (c.isDemo ? '<span class="chip chip-demo">示例演示码 · 不可真实兑换</span>' : c.pendingVerification ? publicBadge() : '<span class="chip chip-ok">社区分享码</span>') +
+    (c.freshness && !c.pendingVerification ? " " + freshnessBadge(c.freshness) : "") +
+    (c.claimCount === 0 ? (c.pendingVerification ? "" : " " + brandNewBadge()) : ' <span style="font-size:11px;color:var(--dim)">已被领 ' + c.claimCount + " 次</span>");
+  $("#claim-area").innerHTML =
+    '<div class="claimed-box' + (c.isDemo ? " demo" : "") + '">' +
+      '<div style="display:flex;flex-wrap:wrap;align-items:center;gap:.5rem"><span class="small-label">你的码</span>' + badges + "</div>" +
+      '<p class="your-code">' + esc(c.code) + "</p>" +
+      (c.createdAt ? '<p class="meta" style="font-size:12px;color:var(--dim);margin-top:.25rem">' + formatMonthDay(c.createdAt) + "入池 · " + (c.lastSuccessAt ? "最近成功：" + formatMonthDay(c.lastSuccessAt) : "暂无成功回报") + "</p>" : "") +
+      (c.isDemo ? '<p class="fs13" style="color:#92400e;margin-top:.25rem;line-height:1.65">这是用于演示完整流程的示例码，不能在 Muse 里真实兑换。等社区有人分享真实码后，池子会优先发放被领最少的码。</p>' : "") +
+      '<div class="flex-row" style="margin-top:.75rem">' +
+        '<button type="button" id="claimed-copy" class="btn-primary" style="flex:1;border-radius:9999px;padding:.625rem 1rem;font-size:14px;font-weight:700;color:#fff">一键复制</button>' +
+        '<button type="button" id="claimed-reset" style="border-radius:9999px;border:1px solid var(--border);background:#fff;padding:.625rem 1rem;font-size:14px;font-weight:600">换一个 / 重新领</button>' +
+      "</div>" +
+    "</div>" +
+    '<p id="claim-msg" class="fs13 dim mt2" role="status"></p>' +
+    '<div class="mt5" style="border-top:1px solid var(--border);padding-top:1rem">' +
+      '<h3 style="margin:0;font-size:15px;font-weight:700">兑换完，回来回报一下</h3>' +
+      '<p class="fs13 dim mt1">你的回报会直接影响这个码之后还发不发：确认失效的原因会被下架，多次失败的码也会被降权。</p>' +
+      '<div id="report-area" class="mt3">' +
+        '<div class="radio-grid">' +
+          '<button type="button" id="rep-ok" class="radio-opt">✓ 兑换成功</button>' +
+          '<button type="button" id="rep-fail" class="radio-opt">✕ 没兑上</button>' +
+        "</div>" +
+        '<div id="fail-fieldset"></div>' +
+        '<p id="report-msg" class="fs13 mt2" role="status"></p>' +
+        '<button type="button" id="report-submit" class="btn-dark" style="margin-top:.75rem;width:100%;padding:.75rem 1.25rem;font-size:14px" disabled>提交回报</button>' +
+      "</div>" +
+    "</div>";
+  $("#claim-msg").textContent = "";
+  $("#claimed-copy").addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(claimed.code);
+      claimedCopied = true;
+      $("#claimed-copy").textContent = "✓ 已复制";
+      showToast("邀请码已复制，去 Muse 里粘贴兑换吧");
+      setTimeout(() => { const b = $("#claimed-copy"); if (b) b.textContent = "一键复制"; }, 2000);
+    } catch (e) {
+      $("#claim-msg").textContent = "复制失败，请长按码手动复制。";
+    }
+  });
+  $("#claimed-reset").addEventListener("click", resetClaim);
+  $("#rep-ok").addEventListener("click", () => setReportChoice("success"));
+  $("#rep-fail").addEventListener("click", () => setReportChoice("failure"));
+  $("#report-submit").addEventListener("click", submitClaimReport);
+}
+function setReportChoice(choice) {
+  reportChoice = choice;
+  $("#rep-ok").classList.toggle("sel-ok", choice === "success");
+  $("#rep-fail").classList.toggle("sel-fail", choice === "failure");
+  $("#report-submit").disabled = false;
+  const box = $("#fail-fieldset");
+  if (choice === "failure") {
+    box.innerHTML = "<fieldset><legend>具体是什么原因？（按 Muse 里看到的提示选）</legend>" +
+      FAIL_OPTIONS.map((o) =>
+        '<label class="fail-opt' + (o.value === "used_up" ? " sel" : "") + '"><input type="radio" name="claim-fail-reason" value="' + o.value + '"' + (o.value === "used_up" ? " checked" : "") + '><span><span class="l">' + o.label + '</span><span class="h">' + o.hint + "</span></span></label>"
+      ).join("") + "</fieldset>";
+    box.querySelectorAll('input[name="claim-fail-reason"]').forEach((r) => r.addEventListener("change", () => {
+      box.querySelectorAll(".fail-opt").forEach((l) => l.classList.toggle("sel", l.contains(r) && r.checked || l.querySelector("input").checked));
+    }));
+  } else {
+    box.innerHTML = "";
+  }
+}
+async function submitClaimReport() {
+  if (!claimed || !reportChoice) return;
+  const btn = $("#report-submit");
+  btn.disabled = true; btn.textContent = "提交中…";
+  const reasonEl = document.querySelector('input[name="claim-fail-reason"]:checked');
+  try {
+    const data = await api("report", {
+      claimId: claimed.claimId ?? null,
+      code: claimed.code,
+      result: reportChoice,
+      reason: reportChoice === "failure" ? (reasonEl ? reasonEl.value : "other") : null,
+    });
+    if (data.ok) {
+      $("#report-area").innerHTML = '<div class="report-ok-box" role="status">' + esc(data.message) + "</div>";
+      loadPool(); loadShowcase();
+    } else {
+      const m = $("#report-msg"); m.textContent = data.message; m.style.color = "#b91c1c";
+      btn.disabled = false; btn.textContent = "提交回报";
+    }
+  } catch (e) {
+    const m = $("#report-msg"); m.textContent = "回报失败，请再试一次。"; m.style.color = "#b91c1c";
+    btn.disabled = false; btn.textContent = "提交回报";
+  }
+}
+
+/* ===== 分享码 ===== */
+$("#share-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const input = $("#share-input"), msg = $("#share-msg"), btn = $("#share-btn");
+  const v = input.value.trim();
+  if (v.length < 3) { msg.textContent = "请粘贴完整的邀请码再提交。"; msg.style.color = "#b91c1c"; return; }
+  btn.disabled = true; btn.textContent = "提交中…";
+  try {
+    const data = await api("submit", { code: v });
+    msg.textContent = data.message;
+    msg.style.color = data.ok ? "#047857" : "#b91c1c";
+    if (data.ok) { input.value = ""; loadPool(); loadShowcase(); }
+  } catch (err) {
+    msg.textContent = "提交失败，请检查码的格式后再试。"; msg.style.color = "#b91c1c";
+  } finally {
+    btn.disabled = false; btn.textContent = "提交到码池";
+  }
+});
+
+/* ===== FAQ（文案与原型一致） ===== */
+const FAQ = [
+  { q: "领到的码一定能用吗？", a: "不保证。码来自社区分享，可能已被用完或撤销。需要说明的是：邀请码本身没有官方公布的有效期，真正卡人的是你自己账号「注册后 48 小时内完成兑换」这个窗口——过了窗口是账号过了兑换期，不是码本身过期了。每个码也有兑换次数上限，官方只说次数有限、没有公布具体数字，本站不写死次数。系统会优先发被领最少的码，并根据大家的回报下架失效码，但无法承诺每一个都可用，具体以 App 内显示为准。没兑上时请回报具体原因，再领下一个。" },
+  { q: "兑换成功能拿到多少奖励？", a: "以你 Muse 应用内当时的说明为准。每个账号看到的奖励、剩余邀请数都可能不一样，本站不写死、不承诺具体的 token 数量。" },
+  { q: "兑换得到的 token 奖励会不会过期？", a: "不会。兑换所得的 token 奖励永不过期（Meta 官方口径），可以放心攒着慢慢用，不用赶着花完。" },
+  { q: "找不到兑换入口怎么办？", a: "先回到上面的向导按平台排查：① 确认选对平台路径；② App 端确认还在加入后的 48 小时内；③ 网页版确认是不是已经兑换成功过（成功后入口会消失）；④ 确认不是 confidential VM 环境（该环境本来就没有入口）。" },
+  { q: "你们会收集我的账号密码吗？", a: "不会。本站只处理邀请码本身，不收集、不要求你填写 Muse / Meta 的账号、密码或验证码。任何让你填密码的“互助站”都不要信。" },
+  { q: "可以买卖邀请码吗？", a: "不可以。这里是免费互助：有多余的就分享，需要的就领。请不要买卖、不要囤码倒卖。" },
+  { q: "页面上这些码是从哪来的？", a: "由站主和社区用户分享，真实存入码池。页面打开时先展示一批（被领次数少的优先），其余的留在池里，可以点「换一批」轮换查看。某个码被回报无效、已用完或被撤销后会被下架，后面的码自动补位展示。" },
+  { q: "卡片上的「新鲜 / 待验证 / 较久未验证」是什么意思？", a: "这是按入池时间和用户回报估算的新鲜度，不是 Muse 官方实时有效性：入池≤3天、或最近7天内有人回报成功，标「新鲜」；入池超过7天且从无成功回报、或最近一次动静距今超过7天，标「待验证」；入池超过14天且从无成功回报，标「较久未验证」。年龄大不等于失效，所以不会只因时间久就删码，只会在排序里自动靠后；只有被回报无效、已用完、已撤销这类硬失效才会直接下架。" },
+  { q: "排序和自动降权是怎么工作的？", a: "展示区和「一次领一个」用同一套排序：先看被领次数（少的优先），最近有成功回报的加权靠前，入池久且从无成功回报的逐步排到后面批次，多次软失败的也会降权。硬失效（无效/已用完/已撤销）不走降权，直接下架。" },
+  { q: "标着「公开分享 · 待验证」的码是什么意思？", a: "这类码来自公开渠道的批量收集，还没人回报兑换成功过，所以排在站主自有码和已验证的码后面，顶部统计的「当前可领」也不把它们算进去。谁第一个用它兑换成功并回报，它就会升级为普通码参与正常排序；被回报失效则照常下架。" },
+  { q: "重复提交同一个码会怎样？", a: "系统会先把码规范化再比对（大小写、空格、连字符的差异都算同一个码），并和包括已下架码在内的全部历史记录比对：已经在池里的不会重复入池，之前下架过的死码也不会被重新加回来复活。" },
+];
+let openFaq = 0;
+function renderFaq() {
+  $("#faq-list").innerHTML = FAQ.map((item, i) =>
+    '<div class="faq-item"><button type="button" class="faq-q" data-faq="' + i + '" aria-expanded="' + String(openFaq === i) + '"><span>' + esc(item.q) + '</span><span class="sign">' + (openFaq === i ? "−" : "+") + "</span></button>" +
+    (openFaq === i ? '<p class="faq-a animate-fade-in">' + esc(item.a) + "</p>" : "") + "</div>"
+  ).join("");
+  document.querySelectorAll("[data-faq]").forEach((b) => b.addEventListener("click", () => {
+    const i = Number(b.dataset.faq);
+    openFaq = openFaq === i ? -1 : i;
+    renderFaq();
+  }));
+}
+renderFaq();
+
+/* ===== Toast ===== */
+let toastTimer = null;
+function showToast(text) {
+  $("#toast-text").textContent = text;
+  $("#toast").classList.remove("hidden");
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => $("#toast").classList.add("hidden"), 2200);
+}
+
+/* ===== 滚动显现 ===== */
+(function initReveal() {
+  const els = Array.from(document.querySelectorAll("[data-reveal]"));
+  if (reducedMotion() || !("IntersectionObserver" in window)) {
+    els.forEach((el) => el.classList.add("is-revealed"));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("is-revealed"); io.unobserve(e.target); } });
+  }, { threshold: 0.06, rootMargin: "0px 0px -4% 0px" });
+  els.forEach((el) => io.observe(el));
+  setTimeout(() => {
+    els.forEach((el) => { const r = el.getBoundingClientRect(); if (r.top < window.innerHeight) el.classList.add("is-revealed"); });
+  }, 120);
+})();
+
+/* ===== 启动 ===== */
+loadPool();
+loadShowcase();
+</script>
+</body>
+</html>
