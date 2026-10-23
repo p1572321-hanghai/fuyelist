@@ -1,4 +1,5 @@
 // fuyelist 站点 Worker 入口（极薄转发层）
+// 部署路径：随仓库 wrangler.toml 由 Workers Builds 部署；先在 muse-deploy 分支预览验证，再合并 main。
 // 作用：仅接管 /api/muse/* 的请求并转给 functions/api/muse/ 下的接口模块；
 // 其余全部路径原样交给静态资产（env.ASSETS），与加入口之前的纯静态行为一致。
 // 接口模块沿用 Pages Functions 的导出形态（onRequestPost / onRequest），
