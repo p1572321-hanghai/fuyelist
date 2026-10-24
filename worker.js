@@ -12,6 +12,8 @@ import * as copy from "./functions/api/muse/copy.js";
 import * as report from "./functions/api/muse/report.js";
 import * as submit from "./functions/api/muse/submit.js";
 import * as bulkImport from "./functions/api/muse/import.js";
+import * as codes from "./functions/api/muse/codes.js";
+import * as sync from "./functions/api/muse/sync.js";
 
 const routes = {
   "/api/muse/pool-state": poolState,
@@ -21,6 +23,8 @@ const routes = {
   "/api/muse/report": report,
   "/api/muse/submit": submit,
   "/api/muse/import": bulkImport,
+  "/api/muse/codes": codes,
+  "/api/muse/sync": sync,
 };
 
 export default {
