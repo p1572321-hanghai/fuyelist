@@ -211,7 +211,7 @@ footer p+p{margin-top:.25rem}
     </div>
     <p class="fs13 dim mt15">池中可领的真实邀请码，被领次数少的排在前面。点卡片「一键复制」就能用；用完请在卡片上回报成功或失败——确认失效的码会被下架并自动补位。所有码不保证可用，复制后请立刻按下面的兑换向导去兑换，别囤。</p>
     <p class="fs13 dim mt15">每个邀请码可供多人先后兑换，兑满为止；具体上限官方未公布，以 Muse App 内显示为准。</p>
-    <p class="fs13 dim mt15">排序会参考入池时间和最近成功回报，太久没人成功过的码会自动靠后。卡片上的新鲜度是按入池时间和用户回报估算的，不是 Muse 官方实时有效性。</p>
+    <p class="fs13 dim mt15">排序会参考入池时间和最近成功回报，太久没人成功过的码会自动靠后；最近 24 小时内新入池的码会优先展示（卡片上标「今日新入」），避免连续翻到一周前的旧码。卡片上的新鲜度是按入池时间和用户回报估算的，不是 Muse 官方实时有效性。</p>
     <div class="legend" aria-label="新鲜度图例">
       <span class="badge badge-fresh"><span class="dot pulse-dot"></span>新鲜</span><span class="note">入池≤3天或近7天有成功</span>
       <span class="badge badge-pending"><span class="dot"></span>待验证</span><span class="note">超过3天未验证</span>
@@ -370,6 +370,13 @@ function freshnessBadge(f) {
 function publicBadge() {
   return '<span class="badge badge-public"><span class="dot"></span>公开分享 · 待验证</span>';
 }
+function isTodayNew(iso) {
+  const t = Date.parse(iso); if (Number.isNaN(t)) return false;
+  return Date.now() - t < 86400000;
+}
+function todayNewBadge() {
+  return '<span class="badge badge-new grad-accent"><span class="dot pulse-dot"></span>今日新入</span>';
+}
 function brandNewBadge() {
   return '<span class="badge badge-new grad-accent"><span class="dot pulse-dot"></span>全新 · 未被领取</span>';
 }
@@ -459,7 +466,7 @@ function cardHtml(item, index) {
   }
   return '<div class="code-card animate-card-in" style="animation-delay:' + Math.min(index, 11) * 60 + 'ms" data-card="' + item.id + '">' +
     '<span aria-hidden="true" class="accent-bar grad-accent"></span>' +
-    '<div class="top"><p class="code">' + esc(item.code) + "</p>" + (item.pendingVerification ? publicBadge() : freshnessBadge(item.freshness)) + "</div>" +
+    '<div class="top"><p class="code">' + esc(item.code) + "</p>" + (item.pendingVerification ? publicBadge() + (isTodayNew(item.createdAt) ? " " + todayNewBadge() : "") : freshnessBadge(item.freshness)) + "</div>" +
     '<p class="meta">' + meta + "</p>" +
     (item.pendingVerification ? '<p class="note">来自公开分享、还没人回报成功过，排在已验证的码后面。可以试，兑完请回报帮它验证。</p>' : "") +
     claimLine +

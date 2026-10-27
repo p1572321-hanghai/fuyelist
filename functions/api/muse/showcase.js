@@ -103,12 +103,17 @@ async function loadEnrichedActiveCodes(db) {
       freshness: computeFreshness(createdMs, ls, activity, now),
       score: computeSortScore(row, createdMs, ls, now),
       tier: isPendingVerification(row) ? 1 : 0,
+      // 最近 24 小时内入池的公开新码：换一批时优先展示，避免用户连续翻到一周前的旧码。
+      // 只作用于公开待验证层，自有精选层的原有顺序不动。
+      recent: isPendingVerification(row) && createdMs >= now - DAY_MS ? 1 : 0,
     };
   });
   enriched.sort(
     (a, b) =>
       a.tier - b.tier ||
-      a.score - b.score ||
+      b.recent - a.recent ||
+      // 新码带内按入池时间倒序（最新的最先）；旧码带保持原有分数排序。
+      (a.recent ? b.createdMs - a.createdMs : a.score - b.score) ||
       a.row.claims - b.row.claims ||
       a.row.fail_count - b.row.fail_count ||
       a.row.id - b.row.id
