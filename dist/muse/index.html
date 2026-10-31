@@ -79,6 +79,8 @@ main{margin:0 auto;width:100%;max-width:72rem;padding:1.25rem 1rem 4rem}
 .stat .num{font-size:20px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
 .stat .num .unit{margin-left:2px;font-size:11px;font-weight:500;color:#cbd5e1;-webkit-text-fill-color:currentColor}
 .stat .lab{margin-top:.25rem;font-size:11px;font-weight:500;color:#94a3b8}
+.stats-hero .num{font-size:28px}
+.stats-sub{margin-top:.5rem;text-align:center;font-size:12px;color:#94a3b8}
 .pill-row{position:relative;margin-top:.625rem}
 .pill{display:inline-flex;align-items:center;gap:.375rem;border-radius:9999px;padding:.25rem .625rem;font-size:12px}
 .pill-today{background:rgba(249,115,22,.15);color:#fed7aa;box-shadow:inset 0 0 0 1px rgba(251,146,60,.3);font-weight:600}
@@ -409,16 +411,14 @@ async function loadPool() {
   try {
     const s = await api("pool-state", {});
     let pill = "";
-    if (s.todayNewCount > 0) {
-      pill = '<div class="pill-row"><span class="pill pill-today"><span class="dot pulse-dot"></span>今日新入池 ' + s.todayNewCount + " 个</span></div>";
-    } else if (s.latestCreatedAt) {
+    if (s.todayNewCount === 0 && s.latestCreatedAt) {
       pill = '<div class="pill-row"><span class="pill pill-latest">最近一次入池：' + formatMonthDay(s.latestCreatedAt) + "</span></div>";
     }
     area.innerHTML =
-      '<div class="stats">' +
-      statHtml("当前可领", s.availableCount) + statHtml("累计被领", s.totalClaimed) +
-      statHtml("兑换成功", s.totalSuccess) + statHtml("真实码入池", s.totalShared) +
-      "</div>" + pill;
+      '<div class="stats stats-hero">' +
+      statHtml("当前可领", s.availableCount) + statHtml("今日新入池", s.todayNewCount) +
+      "</div>" +
+      '<p class="stats-sub">累计被领 ' + s.totalClaimed + " 次 · 兑换成功 " + s.totalSuccess + " 次 · 累计入池 " + s.totalShared + " 个</p>" + pill;
     area.querySelectorAll(".stat .num").forEach((el) => countUp(el, Number(el.dataset.value)));
   } catch (e) {
     area.innerHTML = '<p class="intro" style="font-size:12px;color:#cbd5e1">码池加载失败。<button type="button" id="pool-retry" class="btn-primary" style="margin-left:.5rem;border-radius:9999px;padding:.25rem .75rem;font-size:12px;font-weight:600;color:#fff">重试</button></p>';
