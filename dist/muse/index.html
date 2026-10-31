@@ -417,8 +417,9 @@ async function loadPool() {
     area.innerHTML =
       '<div class="stats stats-hero">' +
       statHtml("当前可领", s.availableCount) + statHtml("今日新入池", s.todayNewCount) +
+      statHtml("累计入池", s.totalShared) +
       "</div>" +
-      '<p class="stats-sub">累计被领 ' + s.totalClaimed + " 次 · 兑换成功 " + s.totalSuccess + " 次 · 累计入池 " + s.totalShared + " 个</p>" + pill;
+      '<p class="stats-sub">累计被领 ' + s.totalClaimed + " 次 · 兑换成功 " + s.totalSuccess + " 次</p>" + pill;
     area.querySelectorAll(".stat .num").forEach((el) => countUp(el, Number(el.dataset.value)));
   } catch (e) {
     area.innerHTML = '<p class="intro" style="font-size:12px;color:#cbd5e1">码池加载失败。<button type="button" id="pool-retry" class="btn-primary" style="margin-left:.5rem;border-radius:9999px;padding:.25rem .75rem;font-size:12px;font-weight:600;color:#fff">重试</button></p>';
