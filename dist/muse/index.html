@@ -419,7 +419,7 @@ async function loadPool() {
       statHtml("当前可领", s.availableCount) + statHtml("今日新入池", s.todayNewCount) +
       statHtml("累计入池", s.totalShared) +
       "</div>" +
-      '<p class="stats-sub">累计被领 ' + s.totalClaimed + " 次 · 兑换成功 " + s.totalSuccess + " 次</p>" + pill;
+      '<p class="stats-sub" id="stats-sub">累计被领 ' + s.totalClaimed + " 次 · 兑换成功 " + s.totalSuccess + " 次</p>" + pill;
     area.querySelectorAll(".stat .num").forEach((el) => countUp(el, Number(el.dataset.value)));
   } catch (e) {
     area.innerHTML = '<p class="intro" style="font-size:12px;color:#cbd5e1">码池加载失败。<button type="button" id="pool-retry" class="btn-primary" style="margin-left:.5rem;border-radius:9999px;padding:.25rem .75rem;font-size:12px;font-weight:600;color:#fff">重试</button></p>';
@@ -467,11 +467,11 @@ function cardHtml(item, index) {
   let claimLine = "";
   if (item.claimCount === 0) {
     if (!item.pendingVerification) {
-      claimLine = '<p class="note" style="display:flex;flex-wrap:wrap;align-items:center;gap:.375rem">' + brandNewBadge() +
+      claimLine = '<p class="note" data-claim-line style="display:flex;flex-wrap:wrap;align-items:center;gap:.375rem">' + brandNewBadge() +
         (item.successCount > 0 ? '<span>' + item.successCount + " 次回报成功</span>" : "") + "</p>";
     }
   } else {
-    claimLine = '<p class="meta" style="margin-top:.125rem">已被领 ' + item.claimCount + " 次" + (item.successCount > 0 ? " · " + item.successCount + " 次回报成功" : "") + "</p>";
+    claimLine = '<p class="meta" data-claim-line style="margin-top:.125rem">已被领 ' + item.claimCount + " 次" + (item.successCount > 0 ? " · " + item.successCount + " 次回报成功" : "") + "</p>";
   }
   return '<div class="code-card animate-card-in" style="animation-delay:' + Math.min(index, 11) * 60 + 'ms" data-card="' + item.id + '">' +
     '<span aria-hidden="true" class="accent-bar grad-accent"></span>' +
@@ -479,7 +479,7 @@ function cardHtml(item, index) {
     '<p class="meta">' + meta + "</p>" +
     (item.pendingVerification ? '<p class="note">来自公开分享、还没人回报成功过，排在已验证的码后面。可以试，兑完请回报帮它验证。</p>' : "") +
     claimLine +
-    '<button type="button" class="btn-primary copy-btn" data-copy="' + item.id + '" data-code="' + esc(item.code) + '" aria-label="复制邀请码 ' + esc(item.code) + '">一键复制</button>' +
+    '<button type="button" class="btn-primary copy-btn" data-copy="' + item.id + '" data-code="' + esc(item.code) + '" data-claims="' + item.claimCount + '" data-success="' + item.successCount + '" aria-label="复制邀请码 ' + esc(item.code) + '">一键复制</button>' +
     '<div id="card-msg-' + item.id + '"></div>' +
     '<div class="flex-row mt2">' +
       '<button type="button" class="btn-success" data-ok="' + item.id + '" data-code="' + esc(item.code) + '">✓ 兑换成功</button>' +
@@ -520,7 +520,28 @@ async function doCopy(btn) {
   btn.textContent = "✓ 已复制";
   card.classList.remove("card-flash"); void card.offsetWidth; card.classList.add("card-flash");
   setTimeout(() => { btn.textContent = "一键复制"; }, 2000);
-  try { await api("copy", { code }); refreshAll(); } catch (e) { /* 计数尽力而为，码已复制 */ }
+  try {
+    await api("copy", { code });
+    bumpCardClaim(id, btn);
+    bumpHeaderClaimed();
+  } catch (e) { /* 计数尽力而为，码已复制 */ }
+}
+function bumpCardClaim(id, btn) {
+  const card = document.querySelector('[data-card="' + id + '"]');
+  if (!card) return;
+  const n = Number(btn.dataset.claims || 0) + 1;
+  btn.dataset.claims = String(n);
+  const s = Number(btn.dataset.success || 0);
+  const text = "已被领 " + n + " 次" + (s > 0 ? " · " + s + " 次回报成功" : "");
+  const line = card.querySelector("[data-claim-line]");
+  if (line) { line.className = "meta"; line.style.cssText = "margin-top:.125rem"; line.innerHTML = text; return; }
+  const meta = card.querySelector("p.meta");
+  if (meta) meta.insertAdjacentHTML("afterend", '<p class="meta" data-claim-line style="margin-top:.125rem">' + text + "</p>");
+}
+function bumpHeaderClaimed() {
+  const sub = document.getElementById("stats-sub");
+  if (!sub) return;
+  sub.innerHTML = sub.innerHTML.replace(/累计被领 (\d+) 次/, (m, n) => "累计被领 " + (Number(n) + 1) + " 次");
 }
 async function doCardReport(btn, result) {
   const code = btn.dataset.code;
@@ -566,6 +587,28 @@ $("#tab-web").addEventListener("click", () => setPlatform("web"));
 
 /* ===== 一次领一个 ===== */
 let claimed = null, reportChoice = null, claimedCopied = false;
+/* 领取状态本地留存：刷新 / 切去 Muse 再回来，仍能看到领到的码并回报 */
+const CLAIM_STORE_KEY = "muse-claimed";
+function saveClaimed(data) {
+  if (!data || data.isDemo) return;
+  try { localStorage.setItem(CLAIM_STORE_KEY, JSON.stringify({ claim: data, savedAt: Date.now() })); } catch (e) { /* 无痕 / 存储被拒时不影响领取 */ }
+}
+function clearSavedClaim() {
+  try { localStorage.removeItem(CLAIM_STORE_KEY); } catch (e) {}
+}
+function restoreClaimed() {
+  try {
+    const raw = localStorage.getItem(CLAIM_STORE_KEY);
+    if (!raw) return;
+    const saved = JSON.parse(raw);
+    if (!saved || !saved.claim || !saved.claim.code) { clearSavedClaim(); return; }
+    if (Date.now() - (saved.savedAt || 0) > 48 * 3600 * 1000) { clearSavedClaim(); return; }
+    claimed = saved.claim;
+    claimed.claimCount = null; /* 恢复时不展示领取时的旧计数，回报用码 + claimId */
+    claimedCopied = false; reportChoice = null;
+    renderClaimed();
+  } catch (e) { clearSavedClaim(); }
+}
 $("#claim-btn").addEventListener("click", async () => {
   const btn = $("#claim-btn"), msg = $("#claim-msg");
   btn.disabled = true; btn.textContent = "正在为你分配…";
@@ -575,6 +618,7 @@ $("#claim-btn").addEventListener("click", async () => {
     if (data.ok && data.code) {
       claimed = data; claimedCopied = false; reportChoice = null;
       renderClaimed();
+      saveClaimed(data);
     }
     loadPool(); loadShowcase();
   } catch (e) {
@@ -585,14 +629,14 @@ $("#claim-btn").addEventListener("click", async () => {
   }
 });
 function resetClaim() {
-  claimed = null; reportChoice = null;
+  claimed = null; reportChoice = null; clearSavedClaim();
   $("#claim-area").innerHTML = '<button type="button" id="claim-btn" class="btn-primary claim-big">领一个邀请码</button><p id="claim-msg" class="fs13 dim mt3" role="status"></p>';
   $("#claim-btn").addEventListener("click", async () => {
     const b = $("#claim-btn"); b.disabled = true; b.textContent = "正在为你分配…";
     try {
       const data = await api("claim", {});
       $("#claim-msg").textContent = data.message || "";
-      if (data.ok && data.code) { claimed = data; reportChoice = null; renderClaimed(); }
+      if (data.ok && data.code) { claimed = data; reportChoice = null; renderClaimed(); saveClaimed(data); }
       loadPool(); loadShowcase();
     } catch (e) { $("#claim-msg").textContent = "领取失败，请再试一次。"; }
     if (!claimed) { b.disabled = false; b.textContent = "领一个邀请码"; }
@@ -603,7 +647,7 @@ function renderClaimed() {
   const badges =
     (c.isDemo ? '<span class="chip chip-demo">示例演示码 · 不可真实兑换</span>' : c.pendingVerification ? publicBadge() : '<span class="chip chip-ok">社区分享码</span>') +
     (c.freshness && !c.pendingVerification ? " " + freshnessBadge(c.freshness) : "") +
-    (c.claimCount === 0 ? (c.pendingVerification ? "" : " " + brandNewBadge()) : ' <span style="font-size:11px;color:var(--dim)">已被领 ' + c.claimCount + " 次</span>");
+    (c.claimCount == null ? "" : c.claimCount === 0 ? (c.pendingVerification ? "" : " " + brandNewBadge()) : ' <span style="font-size:11px;color:var(--dim)">已被领 ' + c.claimCount + " 次</span>");
   $("#claim-area").innerHTML =
     '<div class="claimed-box' + (c.isDemo ? " demo" : "") + '">' +
       '<div style="display:flex;flex-wrap:wrap;align-items:center;gap:.5rem"><span class="small-label">你的码</span>' + badges + "</div>" +
@@ -677,6 +721,7 @@ async function submitClaimReport() {
     });
     if (data.ok) {
       $("#report-area").innerHTML = '<div class="report-ok-box" role="status">' + esc(data.message) + "</div>";
+      clearSavedClaim();
       loadPool(); loadShowcase();
     } else {
       const m = $("#report-msg"); m.textContent = data.message; m.style.color = "#b91c1c";
@@ -763,6 +808,7 @@ function showToast(text) {
 /* ===== 启动 ===== */
 loadPool();
 loadShowcase();
+restoreClaimed();
 </script>
 </body>
 </html>
