@@ -493,18 +493,33 @@ function cardHtml(item, index) {
       '<button type="button" class="btn-dark" style="margin-top:.5rem;width:100%;border-radius:9999px;padding:.5rem .75rem;font-size:12px" data-submit-fail="' + item.id + '" data-code="' + esc(item.code) + '">提交回报</button>' +
     "</div></div>";
 }
+async function copyText(text) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    try { await navigator.clipboard.writeText(text); return true; } catch (e) { /* 降级到传统办法 */ }
+  }
+  try {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.setAttribute("readonly", "");
+    ta.style.cssText = "position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;";
+    document.body.appendChild(ta);
+    ta.select();
+    ta.setSelectionRange(0, text.length);
+    const ok = document.execCommand("copy");
+    document.body.removeChild(ta);
+    return ok;
+  } catch (e) { return false; }
+}
 async function doCopy(btn) {
   const code = btn.dataset.code, id = btn.dataset.copy;
   const card = btn.closest(".code-card");
-  try {
-    await navigator.clipboard.writeText(code);
-    btn.textContent = "✓ 已复制";
-    card.classList.remove("card-flash"); void card.offsetWidth; card.classList.add("card-flash");
-    setTimeout(() => { btn.textContent = "一键复制"; }, 2000);
-  } catch (e) {
+  if (!(await copyText(code))) {
     cardMsg(id, "复制失败，请长按码手动复制。", false);
     return;
   }
+  btn.textContent = "✓ 已复制";
+  card.classList.remove("card-flash"); void card.offsetWidth; card.classList.add("card-flash");
+  setTimeout(() => { btn.textContent = "一键复制"; }, 2000);
   try { await api("copy", { code }); refreshAll(); } catch (e) { /* 计数尽力而为，码已复制 */ }
 }
 async function doCardReport(btn, result) {
@@ -616,15 +631,14 @@ function renderClaimed() {
     "</div>";
   $("#claim-msg").textContent = "";
   $("#claimed-copy").addEventListener("click", async () => {
-    try {
-      await navigator.clipboard.writeText(claimed.code);
-      claimedCopied = true;
-      $("#claimed-copy").textContent = "✓ 已复制";
-      showToast("邀请码已复制，去 Muse 里粘贴兑换吧");
-      setTimeout(() => { const b = $("#claimed-copy"); if (b) b.textContent = "一键复制"; }, 2000);
-    } catch (e) {
+    if (!(await copyText(claimed.code))) {
       $("#claim-msg").textContent = "复制失败，请长按码手动复制。";
+      return;
     }
+    claimedCopied = true;
+    $("#claimed-copy").textContent = "✓ 已复制";
+    showToast("邀请码已复制，去 Muse 里粘贴兑换吧");
+    setTimeout(() => { const b = $("#claimed-copy"); if (b) b.textContent = "一键复制"; }, 2000);
   });
   $("#claimed-reset").addEventListener("click", resetClaim);
   $("#rep-ok").addEventListener("click", () => setReportChoice("success"));
