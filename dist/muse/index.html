@@ -204,6 +204,19 @@ footer p+p{margin-top:.25rem}
 .fb-sub{margin:.5rem 0 0;font-size:13px;line-height:1.6;color:var(--dim)}
 .fb-qr{display:block;width:100%;max-width:17rem;height:auto;margin:1rem auto 0;border-radius:.75rem}
 .fb-hint{margin:.75rem 0 0;font-size:12px;color:var(--dim)}
+/* ===== 广告位：页头下方横幅 ===== */
+.ad-banner{display:flex;align-items:center;gap:1rem;margin-top:1rem;border-radius:1rem;padding:.875rem 1.125rem;color:#fff;text-decoration:none;background:linear-gradient(120deg,#e85c20 0%,#f97316 45%,#f59e0b 100%);box-shadow:0 10px 24px -10px rgba(232,92,32,.55)}
+.ad-text{display:flex;flex-direction:column;gap:.2rem;min-width:0;flex:1}
+.ad-title{font-size:17px;font-weight:800;line-height:1.35}
+.ad-tag{display:inline-block;vertical-align:.15em;margin-right:.45rem;border:1px solid rgba(255,255,255,.55);border-radius:9999px;padding:.15rem .45rem;font-size:10px;font-weight:600;line-height:1;color:rgba(255,255,255,.9)}
+.ad-sub{font-size:12px;line-height:1.5;color:rgba(255,255,255,.88)}
+.ad-btn{flex-shrink:0;border-radius:9999px;background:#fff;color:#c74713;font-size:14px;font-weight:700;padding:.6rem 1.125rem;white-space:nowrap;box-shadow:0 4px 12px -4px rgba(0,0,0,.25)}
+@media(max-width:640px){
+  .ad-banner{flex-wrap:wrap;gap:.625rem;padding:1rem}
+  .ad-text{flex:1 1 100%}
+  .ad-btn{flex:1 1 100%;text-align:center}
+  .ad-title{font-size:16px}
+}
 .small-label{font-size:12px;font-weight:600;letter-spacing:.02em;color:var(--dim)}
 </style>
 </head>
@@ -221,6 +234,15 @@ footer p+p{margin-top:.25rem}
     <p class="intro">下面直接展示可领的邀请码，复制后按兑换向导去兑换；兑完回来回报一次，失效码会自动下架补位。</p>
     <div id="stats-area"><p class="intro" style="font-size:12px;color:#94a3b8">正在加载码池…</p></div>
   </div>
+
+  <!-- 广告位：Muse 满配成品号 -->
+  <a class="ad-banner" href="https://xx.23acc.com/item?id=82345" target="_blank" rel="noopener">
+    <span class="ad-text">
+      <span class="ad-title"><span class="ad-tag">广告</span>Muse 310亿额度满配成品号</span>
+      <span class="ad-sub">满配成品号 · 到手即用，点进链接就能在线支付购买</span>
+    </span>
+    <span class="ad-btn">立即购买 →</span>
+  </a>
 
   <!-- 展示区 -->
   <section data-reveal class="card showcase" aria-labelledby="showcase-h">
