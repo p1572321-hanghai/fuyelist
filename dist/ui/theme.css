@@ -174,7 +174,8 @@ h1 { color: var(--forest); font-weight: 750; letter-spacing: -.055em; text-wrap:
 /* Muse: same system, with a task-oriented code workspace. */
 .muse-page .app-bg { background: none; min-height: 0; }
 .muse-page main { padding-bottom: 48px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
-.muse-page .header, .muse-page .showcase, .muse-page .wizard, .muse-page [aria-labelledby="faq-h"], .muse-page .related, .muse-page footer { grid-column: 1 / -1; }
+.muse-page .header, .muse-page .ad-banner, .muse-page .showcase, .muse-page .wizard, .muse-page [aria-labelledby="faq-h"], .muse-page .related, .muse-page footer { grid-column: 1 / -1; }
+.muse-page .ad-banner { margin-top: 0; border-radius: 20px; }
 .muse-page .header { margin: 30px 0 12px; padding: 40px; border: 1px solid #fff; border-radius: 26px; box-shadow: 0 16px 40px #174f4306; background: linear-gradient(115deg, #fff2e3 0%, #fbfcf1 45%, #d5f2e1 100%); color: var(--forest); }
 .muse-page .header .top-bar { display: none; }
 .muse-page .header .glow { background: #a8e1c3; opacity: .4; height: 18rem; width: 18rem; right: -5rem; top: -3rem; filter: blur(50px); }

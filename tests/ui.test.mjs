@@ -68,6 +68,23 @@ test('catalog and curated project counts remain intact', () => {
   assert.equal((read('dist/sidehustle/index.html').match(/class="project"/g) || []).length, 169);
 });
 
+test('existing social cards and Muse feedback survive the redesign', () => {
+  for (const [page, image] of [['dist/index.html', '/og-card-home-v3.png'], ['dist/muse/index.html', '/muse/og-card-v3.png']]) {
+    const html = read(page);
+    assert.equal((html.match(/property="og:image"/g) || []).length, 1);
+    assert.ok(html.includes('content="https://fuyelist.com' + image + '"'));
+    assert.match(html, /name="twitter:card" content="summary_large_image"/);
+    assert.ok(fs.statSync(root + 'dist' + image).size > 0);
+    assert.doesNotMatch(html, /^(<<<<<<<|=======|>>>>>>>)/m);
+  }
+  const muse = read('dist/muse/index.html');
+  assert.match(muse, /id="feedback-modal"/);
+  assert.match(muse, /class="fb-qr" src="data:image\/jpeg;base64,/);
+  assert.match(muse, /class="ad-banner"/);
+  assert.match(muse, /累计被领次数：/);
+  assert.match(read('dist/ui/theme.css'), /\.muse-page \.ad-banner[^{}]*\{ grid-column: 1 \/ -1;/);
+});
+
 test('inline scripts still parse on every page', () => {
   for (const file of ['dist/index.html', 'dist/sidehustle/index.html', 'dist/muse/index.html']) {
     for (const [, code] of read(file).matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/g)) new vm.Script(code);
@@ -126,6 +143,15 @@ test('card highlight is cleared when leaving, editing, using keyboard or backgro
 test('touch pointers never activate the effect', () => {
   const h = harness(); h.move(40, 40, undefined, { pointerType: 'touch' });
   assert.equal(h.aura().classList.contains('is-visible'), false);
+});
+
+test('feedback dialogs suppress cursor effects', () => {
+  const h = harness(); h.move(100, 100);
+  const dialog = new h.Element();
+  dialog.closest = selector => selector.includes('[role="dialog"]') ? dialog : null;
+  h.move(100, 100, dialog);
+  assert.equal(h.aura().classList.contains('is-visible'), false);
+  assert.equal(h.frames.size, 0);
 });
 
 test('coarse pointers and reduced-motion settings do not create an aura', () => {

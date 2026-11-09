@@ -53,7 +53,7 @@
   }
   function pointerMove(event) {
     if (!enabled() || !finePointer.matches || event.pointerType !== 'mouse' || document.hidden || !aura) return;
-    if (event.buttons || event.target.closest('input, textarea, select, dialog, [contenteditable="true"]')) { hideAura(); return; }
+    if (event.buttons || event.target.closest('input, textarea, select, dialog, [role="dialog"], [contenteditable="true"]')) { hideAura(); return; }
     target.x = event.clientX;
     target.y = event.clientY;
     const jumped = Math.hypot(target.x - front.x, target.y - front.y) > 600;
