@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="color-scheme" content="light" />
 <meta name="description" content="Muse 邀请码互助：免费分享与领取 Muse 邀请码，附手机 App 与网页版兑换入口的准确路径与 48 小时兑换说明。领一个试试，用不了就换下一个。" />
-<link rel="icon" href="data:," />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 <title>Muse 邀请码互助 · fuyelist.com 副业风向标</title>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-VJMS63QC57"></script>
@@ -197,19 +197,24 @@ footer p+p{margin-top:.25rem}
 .hidden{display:none!important}
 .small-label{font-size:12px;font-weight:600;letter-spacing:.02em;color:var(--dim)}
 </style>
+<link rel="stylesheet" href="/ui/theme.css?v=20261109">
+<script defer src="/ui/motion.js?v=20261109"></script>
 </head>
-<body>
+<body class="muse-page"><a class="skip-link" href="#showcase-h">跳到邀请码</a>
+<header class="site-header"><a class="brand" href="/"><img src="/brand-compass.svg" alt="" width="38" height="38">副业风向标<span class="brand-sub">把实战变成方向</span></a><nav class="site-nav" aria-label="主导航"><a href="/">问题案例</a><a href="/sidehustle/">精选副业</a><a href="/muse/" aria-current="page">Muse 邀请码</a></nav><button class="motion-toggle" type="button" aria-label="开关页面动效与鼠标拖尾" aria-pressed="true">动效开</button></header>
 <div class="app-bg">
 <main>
   <!-- 页头 -->
   <div class="header">
     <span aria-hidden="true" class="top-bar grad-accent"></span>
     <span aria-hidden="true" class="glow"></span>
+    <p class="hero-kicker">MUSE / COMMUNITY INVITES</p>
     <div class="row">
       <h1>Muse <span class="grad-accent-text">邀请码互助</span></h1>
       <p class="site-line"><a class="brand" href="/">fuyelist.com · 副业风向标</a> 工具页 · 独立社区互助 · <span class="notofficial">非 Meta / Muse 官方</span></p>
     </div>
     <p class="intro">下面直接展示可领的邀请码，复制后按兑换向导去兑换；兑完回来回报一次，失效码会自动下架补位。</p>
+    <div class="hero-actions"><a class="button-solid" href="#showcase-h">领取邀请码 <span aria-hidden="true">↓</span></a><a class="button-quiet" href="#share-h">分享我的邀请码 <span aria-hidden="true">↗</span></a></div>
     <div id="stats-area"><p class="intro" style="font-size:12px;color:#94a3b8">正在加载码池…</p></div>
   </div>
 
@@ -220,6 +225,7 @@ footer p+p{margin-top:.25rem}
       <h2 id="showcase-h">邀请码 · 打开就能领</h2>
     </div>
     <p class="fs13 dim mt15">池中可领的真实邀请码，被领次数少的排在前面。点卡片「一键复制」就能用；用完请在卡片上回报成功或失败——确认失效的码会被下架并自动补位。所有码不保证可用，复制后请立刻按下面的兑换向导去兑换，别囤。</p>
+    <details class="pool-guide"><summary>使用规则与新鲜度说明</summary>
     <p class="fs13 dim mt15">每个邀请码可供多人先后兑换，兑满为止；具体上限官方未公布，以 Muse App 内显示为准。</p>
     <p class="fs13 dim mt15">排序会参考入池时间和最近成功回报，太久没人成功过的码会自动靠后；最近 24 小时内新入池的码会优先展示（卡片上标「今日新入」），避免连续翻到一周前的旧码。卡片上的新鲜度是按入池时间和用户回报估算的，不是 Muse 官方实时有效性。</p>
     <div class="legend" aria-label="新鲜度图例">
@@ -227,6 +233,7 @@ footer p+p{margin-top:.25rem}
       <span class="badge badge-pending"><span class="dot"></span>待验证</span><span class="note">超过3天未验证</span>
       <span class="badge badge-stale"><span class="dot"></span>较久未验证</span><span class="note">超过14天且无成功回报</span>
     </div>
+    </details>
     <div id="showcase-area"><p class="fs14 dim mt4">正在加载邀请码…</p></div>
   </section>
 
